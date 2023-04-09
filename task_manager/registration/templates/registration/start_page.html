@@ -1,0 +1,11 @@
+{% extends 'registration/registration_base.html' %}
+
+{% block title %} <title>Task Manager by Danylo Algin</title> {% endblock %}
+
+{% block content %}
+
+<div class="container-m align-items-center" style="position: absolute; top: calc(50% - 50px); left: 50%; transform: translate(-50%, -50%);">
+  <button type="button" class="btn btn-secondary btn-dark btn-hover btn-lg" onclick="location.href=`{% url 'registration:signup' %}`">Start the Work</button>
+</div>
+
+{% endblock %}
