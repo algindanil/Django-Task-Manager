@@ -35,18 +35,23 @@
     </div>
 </div>
 
+{% block items_list %}
 
 <div class="btn-group btn-light d-flex" role="group" aria-label="Basic example" style="margin-top: 50px;">
-  {% block menu %}
+  {% if is_daily == False %}
   <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Tasks</button>
   <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
   <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:dailies' %}`">Dailies</button>
-  {% endblock %}
+  {% else %}
+  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:tasks' %}`">Tasks</button>
+  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
+  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Dailies</button>
+  {% endif %}
 </div>
 
 <div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
   <div class="row">
-  <a href="#" class="btn btn-light btn-lg btn-hover" onclick="location.href=`{% url 'main_page:add_task' %}`">Add Task</a>       
+  <a href="{% url 'main_page:add_task' %}" class="btn btn-light btn-lg btn-hover">Add {{ add_literal }}</a>       
   </div>
   {% for t in tasks %}
   <div class="row" style="margin-top: 10px;">
@@ -58,4 +63,5 @@
   </div>
   {% endfor %}
 </div>
+{% endblock %}
 {% endblock %}

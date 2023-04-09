@@ -1,0 +1,29 @@
+{% extends 'main_page/tasks.html' %}
+
+{% block title %} <title>Habits</title> {% endblock %}
+
+{% block items_list %}
+
+<div class="btn-group btn-light d-flex" role="group" aria-label="Basic example" style="margin-top: 50px;">
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:tasks' %}`">Tasks</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Habits</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:dailies' %}`">Dailies</button>
+</div>
+
+<div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
+    <div class="row">
+    <a href="{% url 'main_page:add_habit' %}" class="btn btn-light btn-lg btn-hover">Add Habit</a>       
+    </div>
+    {% for h in habits %}
+    <div class="row" style="margin-top: 10px;">
+    <div class="col-5 align-items-center justify-content-center"><h3 style="float: left;">{{ h.name }}</h3></div>
+    <div class="col align-items-center justify-content-center"><h3 style="float: left;">{{ h.description }}</h3></div>
+    <div class="col-1 d-flex align-items-center justify-content-center">
+        <img src="media/images/edit_icon.png" style="width: 20px; max-height: 20px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ h.get_absolute_url }}"'>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+

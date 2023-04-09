@@ -9,16 +9,17 @@ from django.conf.urls.static import static
 app_name = 'main_page'
 
 urlpatterns = [
-    path('tasks', index, name='home'),
+    path('tasks', index, name='tasks'),
+    path('habits', habits_view, name='habits'),
+    path('dailies', index, kwargs={'is_daily': True}, name='dailies'),
     path('logout', logout_view, name='logout'),
     path('categories', categories_view, name='categories'),
     path('achievements', achievements_view, name='achievements'),
     path('profile', profile_view, name='profile'),
     path('task/<slug:task_slug>', ShowTask.as_view(), name='task'),
     path('habit/<slug:habit_slug>', ShowHabit.as_view(), name='habit'),
-    path('add_task', AddTask.as_view(), name='add_task'),
-    path('habits', habits_view, name='habits'),
-    path('dailies', dailies_view, name='dailies'),
+    path('add_task', add_task, name='add_task'),
+    path('add_habit', AddHabit.as_view(), name='add_habit'),
 ]
 
 if settings.DEBUG:
