@@ -51,7 +51,11 @@
 
 <div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
   <div class="row">
-  <a href="{% url 'main_page:add_task' %}" class="btn btn-light btn-lg btn-hover">Add {{ add_literal }}</a>       
+  {% if not is_daily %}
+  <a href="{% url 'main_page:add_task' %}" class="btn btn-light btn-lg btn-hover">Add Task</a>       
+  {% else %}
+  <a href="{% url 'main_page:add_daily' %}" class="btn btn-light btn-lg btn-hover">Add Daily</a>       
+  {% endif %}
   </div>
   {% for t in tasks %}
   <div class="row" style="margin-top: 10px;">

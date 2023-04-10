@@ -19,7 +19,8 @@ urlpatterns = [
     path('task/<slug:task_slug>', ShowTask.as_view(), name='task'),
     path('habit/<slug:habit_slug>', ShowHabit.as_view(), name='habit'),
     path('add_task', add_task, name='add_task'),
-    path('add_habit', AddHabit.as_view(), name='add_habit'),
+    path('add_daily', add_task, kwargs={'is_daily': True}, name='add_daily'),
+    path('add_habit', add_habit, name='add_habit'),
 ]
 
 if settings.DEBUG:

@@ -11,5 +11,5 @@ class HabitForm(ModelForm):
 class TaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = [ 'name', 'description', 'difficulty', 'categories', 'is_daily', 'reward' ]
+        fields = [ 'name', 'description', 'difficulty', 'categories' ]
         

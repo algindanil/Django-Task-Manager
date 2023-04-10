@@ -1,17 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Task</title>
-</head>
-<body>
-    <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        {{form.errors}}
-        <button type="submit">Save</button>
-    </form>
-</body>
-</html>
+{% extends 'forms_base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block title %} 
+<title>Add Habit</title>
+{% endblock %}
+
+{% block content %}
+
+<div class="container-m align-items-center" style="position: absolute; top: calc(50% - 20px); left: 50%; transform: translate(-50%, -50%);">
+<h1 style="margin-bottom: 20px; text-align: center;">ADD HABIT</h1>
+  
+  <form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock %}

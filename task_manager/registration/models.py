@@ -59,7 +59,7 @@ class Task(models.Model):
     difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     due_date = models.DateTimeField(null=True, blank=True, validators=[validate_due_date])
     categories = models.ManyToManyField('Category')
-    reward = models.FloatField(validators=[MinValueValidator(0.0)])
+    reward = models.FloatField(validators=[MinValueValidator(0.0)], default = 1.0)
     create_date = models.DateTimeField(auto_now_add=True)
     is_daily = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
