@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django import forms
 
-from registration.models import Habit, Task
+from registration.models import *
 
 class HabitForm(ModelForm):
     class Meta:

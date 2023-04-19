@@ -7,6 +7,7 @@ from django.views.generic import DetailView, UpdateView, CreateView
 from django.utils.text import slugify
 
 from .forms import *
+from registration.forms import CustomUserChangeForm
 
 @login_required
 def index(request, is_daily=False):
@@ -32,18 +33,21 @@ def categories_view(request):
     return render(request, 'main_page/categories.html', { 'categories': categories })
 
 @login_required
-def achievements_view(request):
-    return HttpResponse("achievements")
+def reward_view(request):
+    return HttpResponse("reward")
 
-@login_required
-def profile_view(request):
-    return HttpResponse("profile")
+class EditProfile(UpdateView):
+    model = CustomUser
+    template_name = 'main_page/profile.html'
+    fields = ['first_name', 'profile_pic', ]
 
-# class ShowTask(DetailView):
-#     model = Task
-#     template_name = 'main_page/show_task.html'
-#     slug_url_kwarg = 'task_slug'
-#     context_object_name = 'task'
+    def form_valid(self, form):
+        form.save()
+        return redirect('main_page:tasks')
+
+    def get_object(self, queryset=None):
+        slug = self.kwargs['user_slug']
+        return get_object_or_404(CustomUser, slug=slug)
 
 class ShowTask(UpdateView):
     model = Task
@@ -76,6 +80,7 @@ class AddTask(CreateView):
     template_name = 'main_page/add_task.html'
     success_url = 'main_page:tasks'
 
+@login_required
 def add_task(request, is_daily=False):
     task_type = 'DAILY' if is_daily else 'TASK'
     if request.method == 'POST':
@@ -103,7 +108,8 @@ def add_task(request, is_daily=False):
     else:
         form = TaskForm()
     return render(request, 'main_page/add_task.html', {'form': form, 'task_type': task_type, })
-    
+
+@login_required    
 def add_habit(request):
     if request.method == 'POST':
         form = HabitForm(request.POST)
@@ -126,15 +132,3 @@ def add_habit(request):
     else:
         form = HabitForm()
     return render(request, 'main_page/add_habit.html', {'form': form})
-
-
-# class AddHabit(CreateView):
-#     form_class = HabitForm
-#     template_name = 'main_page/add_habit.html'
-#     success_url = 'main_page:habits'
-
-# class ShowHabit(DetailView):
-#     model = Habit
-#     template_name = 'main_page/show_habit.html'
-#     slug_url_kwarg = 'habit_slug'
-#     context_object_name = 'habit'

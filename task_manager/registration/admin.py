@@ -8,9 +8,9 @@ class TaskAdmin(admin.ModelAdmin):
 class HabitAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name', )}
 
-# Register your models here.
+
 admin.site.register(CustomUser)
 admin.site.register(Category)
-admin.site.register(Achievement)
+admin.site.register(Reward)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Habit, HabitAdmin)
