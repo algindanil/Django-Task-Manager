@@ -8,7 +8,6 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ['username', 'first_name', 'email']
         
-
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model=CustomUser
