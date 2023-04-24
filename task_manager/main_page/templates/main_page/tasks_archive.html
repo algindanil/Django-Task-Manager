@@ -1,0 +1,25 @@
+{% extends 'main_page/tasks.html' %}
+{% load static %}
+
+{% block title %} 
+<title>Completed Tasks</title>
+{% endblock %}
+
+{% block navbar %}
+<button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:tasks' %}`">Tasks</button>
+<button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
+<button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:dailies' %}`">Dailies</button>
+{% endblock %}
+
+{% block icons %}
+<img src="media/images/checkbox-checked.png" style = "width: 25px; max-height: 25px; float: right; margin-right: 30px;">
+{% endblock %}
+
+{% block archive_link %}
+{% if is_daily == False %}
+<a href="{% url 'main_page:tasks' %}" class="btn btn-light btn-lg btn-hover">Back To Uncompleted Tasks</a>
+{% else %}
+<a href="{% url 'main_page:dailies' %}" class="btn btn-light btn-lg btn-hover">Back To Uncompleted Tasks</a>
+{% endif %}
+{% endblock %}
+

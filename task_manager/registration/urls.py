@@ -1,6 +1,6 @@
 from django.urls import path
 
-from registration.views import *
+from registration.views import index, SignUpView, LoginView
 
 app_name = 'registration'
 

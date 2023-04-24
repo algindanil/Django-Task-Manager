@@ -9,9 +9,9 @@ from django.conf.urls.static import static
 app_name = 'main_page'
 
 urlpatterns = [
-    path('tasks', index, name='tasks'),
+    path('tasks', tasks_view, name='tasks'),
     path('habits', habits_view, name='habits'),
-    path('dailies', index, kwargs={'is_daily': True}, name='dailies'),
+    path('dailies', tasks_view, kwargs={'is_daily': True}, name='dailies'),
     path('logout', logout_view, name='logout'),
     path('categories', categories_view, name='categories'),
     path('reward', reward_view, name='reward'),
@@ -21,6 +21,11 @@ urlpatterns = [
     path('add_task', add_task, name='add_task'),
     path('add_daily', add_task, kwargs={'is_daily': True}, name='add_daily'),
     path('add_habit', add_habit, name='add_habit'),
+    path('complete_task/<int:task_id>', complete_task, name='complete_task'),
+    path('complete_daily/<int:task_id>', complete_task, kwargs={'is_daily': True}, name='complete_daily'),
+    path('tasks_archive', tasks_archive, name='tasks_archive'),
+    path('dailies_archive', tasks_archive, kwargs={ 'is_daily': True }, name='dailies_archive'),
+
 ]
 
 if settings.DEBUG:

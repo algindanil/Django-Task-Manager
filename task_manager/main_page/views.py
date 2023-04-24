@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
-from registration.models import *
+from registration.models import CustomUser, Category, Reward, Task, Habit
 from django.contrib.auth import logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -10,16 +10,15 @@ from .forms import *
 from registration.forms import CustomUserChangeForm
 
 @login_required
-def index(request, is_daily=False):
+def tasks_view(request, is_daily=False):
     user = request.user
-    tasks = Task.objects.filter(player=user, is_daily=is_daily)
+    tasks = Task.objects.filter(player=user, is_daily=is_daily, is_completed=False)
     return render(request, 'main_page/tasks.html', { 'user': user, 'tasks': tasks, 'is_daily': is_daily })
 
 def habits_view(request):
     user = request.user
     habits = Habit.objects.filter(player=user)
     return render(request, 'main_page/habits.html', { 'user': user, 'habits': habits })
-
 
 @login_required
 def logout_view(request):
@@ -132,3 +131,24 @@ def add_habit(request):
     else:
         form = HabitForm()
     return render(request, 'main_page/add_habit.html', {'form': form})
+
+@login_required
+def complete_task(request, task_id, is_daily=False):
+    task = get_object_or_404(Task, id=task_id)
+    user = request.user
+    categories = task.categories.all()
+    for c in categories:
+        c.progress_meter += task.priority + task.difficulty
+        c.save()
+    user.currency_amount += task.priority + task.difficulty
+    task.is_completed = True
+    task.save()
+    user.save()
+    return redirect('main_page:tasks') if not is_daily else redirect('main_page:dailies')
+
+
+@login_required
+def tasks_archive(request, is_daily=False):
+    user = request.user
+    tasks = Task.objects.filter(player=user, is_daily=is_daily, is_completed=True)
+    return render(request, 'main_page/tasks_archive.html', { 'user': user, 'tasks': tasks, 'is_daily': is_daily })    

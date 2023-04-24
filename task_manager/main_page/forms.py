@@ -6,10 +6,10 @@ from registration.models import *
 class HabitForm(ModelForm):
     class Meta:
         model = Habit
-        fields = [ 'name', 'description', 'categories' ]
+        fields = [ 'name', 'description', 'priority','categories' ]
 
 class TaskForm(ModelForm):
     class Meta:
         model = Task
-        fields = [ 'name', 'description', 'difficulty', 'categories' ]
+        fields = [ 'name', 'description', 'difficulty', 'priority', 'categories' ]
         
