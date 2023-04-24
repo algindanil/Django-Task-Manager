@@ -8,6 +8,7 @@ from django.utils.text import slugify
 
 
 class CustomUser(AbstractUser):
+    
     last_name = None
     first_name = models.CharField(max_length=32, null=True)
     profile_pic = models.ImageField(upload_to='images/%Y/%m/%d/', default='images/default_pfp.jpg')
@@ -19,13 +20,13 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
-        ordering = ['time_joined', 'first_name']
+        ordering = ['time_joined']
 
     def __str__(self):
         return self.username
     
     def get_absolute_url(self):
-        return reverse('main_page:profile', kwargs={'user_slug': self.slug})
+        return reverse('main:profile', kwargs={'user_slug': self.slug})
     
     def save(self, **kwargs):
         super(CustomUser, self).save()
@@ -34,19 +35,20 @@ class CustomUser(AbstractUser):
             self.slug = slugify(self.pk)
             super(CustomUser, self).save()
 
+
 class Category(models.Model):
+
     name = models.CharField(max_length=50)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     description = models.CharField(max_length=512, null=True, blank=True)
     progress_meter = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
-    priority = models.SmallIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(10)])
 
     class Meta:
         verbose_name_plural = 'Categories'
 
     def __str__(self):
-        user = CustomUser.objects.get(id=self.player.id)
-        return self.name + ' made by player ' + user.username
+        return self.name
+    
     
 class Reward(models.Model):
     name = models.CharField(max_length=50)
@@ -70,6 +72,7 @@ class Task(models.Model):
     description = models.CharField(max_length=512, null=True, blank=True)
     is_completed = models.BooleanField(default=False)
     difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+    priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     due_date = models.DateTimeField(null=True, blank=True, validators=[validate_due_date])
     categories = models.ManyToManyField('Category')
     reward = models.FloatField(validators=[MinValueValidator(0.0)], default = 1.0)
@@ -84,6 +87,13 @@ class Task(models.Model):
     def get_absolute_url(self):
         return reverse('main_page:task', kwargs={'task_slug': self.slug})
 
+    def get_completion_url(self):
+        if not self.is_daily:
+            return reverse('main_page:complete_task', kwargs={'task_id': self.pk}) 
+        else:
+            return reverse('main_page:complete_daily', kwargs={'task_id': self.pk}) 
+
+
 class Habit(models.Model):
     name = models.CharField(max_length=100)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -93,6 +103,7 @@ class Habit(models.Model):
     categories = models.ManyToManyField('Category')
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
+    priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     positive_behavior_count = models.IntegerField(default=0)
     negative_behavior_count = models.IntegerField(default=0)
 
