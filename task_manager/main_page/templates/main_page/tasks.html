@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
+
 {% block title %} 
+
 <title>Task Manager Project</title>
+
 {% endblock %}
 
+
 {% block content %}
+
 <div class="container text-center" style="margin-top: 50px;">
     <div class="row">
       <div class="col d-flex justify-content-center align-items-center">
@@ -37,55 +43,72 @@
     </div>
 </div>
 
+
 {% block items_list %}
 
 <div class="btn-group btn-light d-flex" role="group" aria-label="Basic example" style="margin-top: 50px;">
+
 {% block navbar %}
   {% if is_daily == False %}
-  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Tasks</button>
-  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
-  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:dailies' %}`">Dailies</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Tasks</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:dailies' %}`">Dailies</button>
   {% else %}
-  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:tasks' %}`">Tasks</button>
-  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
-  <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Dailies</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:tasks' %}`">Tasks</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg" onclick="location.href=`{% url 'main_page:habits' %}`">Habits</button>
+    <button type="button" class="btn btn-secondary btn-light btn-hover btn-lg active" style="pointer-events: none;">Dailies</button>
   {% endif %}
+
 {% endblock %}
+
 </div>
+
 
 <div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
   <div class="row">
   {% if not is_daily %}
-  <a href="{% url 'main_page:add_task' %}" class="btn btn-light btn-lg btn-hover">Add Task</a>       
+    <a href="{% url 'main_page:add_task' %}" class="btn btn-light btn-lg btn-hover">Add Task</a>       
   {% else %}
-  <a href="{% url 'main_page:add_daily' %}" class="btn btn-light btn-lg btn-hover">Add Daily</a>       
+    <a href="{% url 'main_page:add_daily' %}" class="btn btn-light btn-lg btn-hover">Add Daily</a>       
   {% endif %}
   </div>
+
   {% for t in tasks %}
+
   <div class="row" style="margin-top: 10px;">
     <div class="col-5 align-items-center justify-content-center"><h3 style="float: left;">{{ t.name }}</h3></div>
     {% if t.description %}
-    <div class="col align-items-center justify-content-center"><h3 style="float: left;">{{ t.description }}</h3></div>
+      <div class="col align-items-center justify-content-center"><h3 style="float: left;">{{ t.description }}</h3></div>
     {% else %}
-    <div class="col align-items-center justify-content-center"><h3 style="float: left;"> </h3></div>
+      <div class="col align-items-center justify-content-center"><h3 style="float: left;"> </h3></div>
     {% endif %}
+
     <div class="col-1 d-flex align-items-center justify-content-center">
       {% block icons %}
       <img src="media/images/edit_icon.png" style="width: 20px; max-height: 20px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_absolute_url }}"'>
       <img src="media/images/checkbox-unchecked.svg" style = "width: 25px; max-height: 25px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_completion_url }}"'>
       {% endblock %}
     </div>
+
   </div>
+  
   {% endfor %}
+
   <div class="row">
     {% block archive_link %}
+
     {% if is_daily == False %}
-      <a href="{% url 'main_page:tasks_archive' %}" class="btn btn-light btn-lg btn-hover">Archive</a>
+      <a href="{% url 'main_page:tasks_archive' %}" class="btn btn-lg btn-hover">Archive</a>
     {% else %}
-      <a href="{% url 'main_page:dailies_archive' %}" class="btn btn-light btn-lg btn-hover">Archive</a>
+      <a href="{% url 'main_page:dailies_archive' %}" class="btn btn-lg btn-hover">Archive</a>
     {% endif %}
+    
     {% endblock %}
   </div>
 </div>
+
+
 {% endblock %}
+
+
 {% endblock %}

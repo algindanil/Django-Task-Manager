@@ -2,8 +2,10 @@ from django.contrib import admin
 
 from registration.models import *
 
+
 class TaskAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name', )}
+
 
 class HabitAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name', )}

@@ -1,9 +1,15 @@
 {% extends 'forms_base.html' %}
+
 {% load static %}
 {% load django_bootstrap5 %}
+
+
 {% block title %} 
+
 <title>Edit Profile</title>
+
 {% endblock %}
+
 
 {% block content %}
 
@@ -15,6 +21,7 @@
     {% bootstrap_form form %}
     <button type="submit" class="btn btn-primary">Save Changes</button>
   </form>
+
 </div>
 
 {% endblock %}

@@ -9,13 +9,16 @@ from django.utils.text import slugify
 
 class CustomUser(AbstractUser):
     
-    last_name = None
+    # Required fields:
     first_name = models.CharField(max_length=32, null=True)
+
+    # Optional fields and fields with default values:
+    last_name = None
     profile_pic = models.ImageField(upload_to='images/%Y/%m/%d/', default='images/default_pfp.jpg')
     currency_amount = models.FloatField(default=0.0, validators=[MinValueValidator(0.0)])
     lvl = models.SmallIntegerField(default=1, validators=[MinValueValidator(0), MaxValueValidator(100)])
-    time_joined = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
+    time_joined = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'User'
@@ -26,7 +29,7 @@ class CustomUser(AbstractUser):
         return self.username
     
     def get_absolute_url(self):
-        return reverse('main:profile', kwargs={'user_slug': self.slug})
+        return reverse('main_page:profile', kwargs={'user_slug': self.slug})
     
     def save(self, **kwargs):
         super(CustomUser, self).save()
@@ -38,8 +41,11 @@ class CustomUser(AbstractUser):
 
 class Category(models.Model):
 
+    # Required fields:
     name = models.CharField(max_length=50)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    # Optional fields and fields with default values:
     description = models.CharField(max_length=512, null=True, blank=True)
     progress_meter = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(100.0)])
 
@@ -51,36 +57,43 @@ class Category(models.Model):
     
     
 class Reward(models.Model):
+
+    # Required fields:
     name = models.CharField(max_length=50)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    description = models.CharField(max_length=512, null=True, blank=True)
     cost = models.FloatField(validators=[MinValueValidator(0.0)])
+
+    # Optional fields and fields with default values:
+    description = models.CharField(max_length=512, null=True, blank=True)
     times_claimed = models.IntegerField(default=0)
-    image = models.ImageField(upload_to='award_pics/%Y/%m/%d/')
 
     def __str__(self):
         return self.name
 
-class Task(models.Model):
 
+class Task(models.Model):
+    
     def validate_due_date(value):
         if value and value < timezone.now():
             raise ValidationError('Due date cannot be in the past.')
-
+    
+    # Required fields:
     name = models.CharField(max_length=100)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    description = models.CharField(max_length=512, null=True, blank=True)
-    is_completed = models.BooleanField(default=False)
     difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
-    due_date = models.DateTimeField(null=True, blank=True, validators=[validate_due_date])
     categories = models.ManyToManyField('Category')
+    
+    # Optional fields and fields with default values:
+    description = models.CharField(max_length=512, null=True, blank=True)
+    is_completed = models.BooleanField(default=False)
+    due_date = models.DateTimeField(null=True, blank=True, validators=[validate_due_date])
     reward = models.FloatField(validators=[MinValueValidator(0.0)], default = 1.0)
     create_date = models.DateTimeField(auto_now_add=True)
     is_daily = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    completion_count = models.IntegerField(default=0, validators=[MinValueValidator(0)])
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
-    
+
     def __str__(self):
         return self.name
     
@@ -92,18 +105,22 @@ class Task(models.Model):
             return reverse('main_page:complete_task', kwargs={'task_id': self.pk}) 
         else:
             return reverse('main_page:complete_daily', kwargs={'task_id': self.pk}) 
-
+        
 
 class Habit(models.Model):
+
+    # Required fields:
     name = models.CharField(max_length=100)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    categories = models.ManyToManyField('Category')
+    difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
+    priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
+
+    # Optional fields and fields with default values:
     description = models.CharField(max_length=512, null=True, blank=True)
     is_good = models.BooleanField(default=True)
     tracking_meter = models.FloatField(default=0.0, validators=[MinValueValidator(-100.0), MaxValueValidator(100.0)])
-    categories = models.ManyToManyField('Category')
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
-    difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)], default=1)
-    priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     positive_behavior_count = models.IntegerField(default=0)
     negative_behavior_count = models.IntegerField(default=0)
 

@@ -1,12 +1,12 @@
 from django.urls import path
-
-# from main_page import views as main_views
-from main_page.views import *
-from task_manager import settings
-
 from django.conf.urls.static import static
 
+from main_page.views import tasks_view, habits_view, logout_view, login_required, categories_view, reward_view, EditProfile, ShowHabit, ShowTask, add_task, add_habit, complete_task, tasks_archive
+from task_manager import settings
+
+
 app_name = 'main_page'
+
 
 urlpatterns = [
     path('tasks', tasks_view, name='tasks'),
@@ -25,8 +25,8 @@ urlpatterns = [
     path('complete_daily/<int:task_id>', complete_task, kwargs={'is_daily': True}, name='complete_daily'),
     path('tasks_archive', tasks_archive, name='tasks_archive'),
     path('dailies_archive', tasks_archive, kwargs={ 'is_daily': True }, name='dailies_archive'),
-
 ]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

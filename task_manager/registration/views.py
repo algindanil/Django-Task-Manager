@@ -1,19 +1,21 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.views import View
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
-from registration.forms import CustomUserLoginForm
 from django.contrib.auth import authenticate,login
-from django.views import View
 
-from registration.forms import CustomUserCreationForm
+from registration.forms import CustomUserLoginForm, CustomUserCreationForm
+
 
 class SignUpView(CreateView):
+
     form_class = CustomUserCreationForm
     template_name = 'registration/signup.html'
 
     def post(self, request, *args, **kwargs):
         form = CustomUserCreationForm(request.POST)
         success_url = reverse_lazy('registration:login')
+        
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
@@ -21,10 +23,13 @@ class SignUpView(CreateView):
         else:
             return render(request, self.template_name, {'form': form})
 
+
 def index(request):
     return render(request, 'registration/start_page.html')
 
+
 class LoginView(View):
+
     def get(self, request):
         form = CustomUserLoginForm()
         return render(request, 'registration/login.html', { 'form': form })
