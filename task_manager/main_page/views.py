@@ -4,8 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.views.generic import DetailView, UpdateView, CreateView
 from django.utils.text import slugify
+from django.db.models import Prefetch
 
-from .forms import *
+from .forms import TaskForm, HabitForm, CategoryForm
 from registration.models import CustomUser, Category, Reward, Task, Habit
 from registration.forms import CustomUserChangeForm
 
@@ -36,7 +37,16 @@ def logout_view(request):
 def categories_view(request):
     
     user = request.user
-    categories = Category.objects.filter(player=user)
+    categories = Category.objects.filter(player=user).prefetch_related(
+        Prefetch('task_set', queryset=Task.objects.filter(is_completed=False)),
+                 'habit_set'
+    ).all()
+
+    print(categories)
+    # for c in categories:
+    #     for t in c.task_set.all():
+    #         print(t.name)
+
     return render(request, 'main_page/categories.html', { 'categories': categories })
 
 
@@ -91,11 +101,11 @@ class ShowHabit(UpdateView):
         return redirect('main_page:home')
 
 
-class AddTask(CreateView):
+# class AddTask(CreateView):
     
-    form_class = TaskForm
-    template_name = 'main_page/add_task.html'
-    success_url = 'main_page:tasks'
+#     form_class = TaskForm
+#     template_name = 'main_page/add_task.html'
+#     success_url = 'main_page:tasks'
 
 
 @login_required
@@ -104,7 +114,7 @@ def add_task(request, is_daily=False):
     task_type = 'DAILY' if is_daily else 'TASK'
     
     if request.method == 'POST':
-        form = TaskForm(request.POST)
+        form = TaskForm(request, request.POST)
         success_url = reverse('main_page:tasks')
         if form.is_valid():
             task = form.save(commit=False)
@@ -126,9 +136,10 @@ def add_task(request, is_daily=False):
             if is_daily:
                 success_url = reverse('main_page:dailies')
             task.save()
+            form.save_m2m()
             return redirect(success_url)
     else:
-        form = TaskForm()
+        form = TaskForm(request)
     
     return render(request, 'main_page/add_task.html', {'form': form, 'task_type': task_type, })
 
@@ -155,11 +166,31 @@ def add_habit(request):
                     break
             
             habit.save()
+            form.save_m2m()
             return redirect(success_url)
     else:
         form = HabitForm()
     
     return render(request, 'main_page/add_habit.html', {'form': form})
+
+
+@login_required
+def add_category(request):
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        success_url = reverse('main_page:tasks')
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.player = request.user
+            category.save()
+            return redirect(success_url)
+        
+    else:
+        form = CategoryForm()
+
+    return render(request, 'main_page/add_category.html', {'form': form})
+
 
 
 @login_required

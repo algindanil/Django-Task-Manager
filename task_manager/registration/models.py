@@ -84,6 +84,7 @@ class Task(models.Model):
     priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     categories = models.ManyToManyField('Category')
     
+    
     # Optional fields and fields with default values:
     description = models.CharField(max_length=512, null=True, blank=True)
     is_completed = models.BooleanField(default=False)
@@ -129,3 +130,4 @@ class Habit(models.Model):
 
     def get_absolute_url(self):
         return reverse('main_page:habit', kwargs={ 'habit_slug': self.slug })
+    

@@ -1,0 +1,26 @@
+{% extends 'forms_base.html' %}
+
+{% load static %}
+{% load django_bootstrap5 %}
+
+
+{% block title %} 
+
+<title>Add Category</title>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-m align-items-center" style="position: absolute; top: calc(50% - 20px); left: 50%; transform: translate(-50%, -50%);">
+<h1 style="margin-bottom: 20px; text-align: center;">ADD CATEGORY</h1>
+  
+  <form action="" method="post" class="form">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+{% endblock %}

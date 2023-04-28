@@ -1,19 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Achievements</title>
-</head>
-<body>
-    <p>Categories</p>
-    {% for c in categories %}
-        <li>{{c.name}}</li>
-        <li>{{c.description}}</li>
-        <li>{{c.progress_meter}}</li>
-        <li>{{c.priority}}</li>
-        <p></p>
-    {% endfor %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}
+
+<title>Categories</title>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container bg-light" style="margin-top: 70px; padding-bottom: 50px;">
+    <h2 class="text-center">Categories</h2>
+    <a href="{% url 'main_page:add_category' %}" class="btn btn-light btn-lg btn-hover">Add Category</a>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        {% for c in categories %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-heading{{ c.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ c.id }}" aria-expanded="false" aria-controls="flush-collapse{{ c.id }}">
+                {{ c.name }}
+            </button>
+          </h2>
+          <div id="flush-collapse{{ c.id }}" class="accordion-collapse collapse" aria-labelledby="flush-heading{{ c.id }}" data-bs-parent="#accordionFlushExample">
+            <div class="accordion-body"> 
+              <h3 class="text-center">Tasks</h3>
+              {% for t in c.task_set.all %}
+              {% if t.is_daily == False %}
+                <div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-5 align-items-center justify-content-center"><h3 style="float: left;">{{ t.name }}</h3></div>
+                        {% if t.description %}
+                        <div class="col align-items-center justify-content-center"><h3 style="float: left;">{{ t.description }}</h3></div>
+                        {% else %}
+                        <div class="col align-items-center justify-content-center"><h3 style="float: left;"> </h3></div>
+                        {% endif %}
+
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                        
+                        <img src="media/images/edit_icon.png" style="width: 20px; max-height: 20px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_absolute_url }}"'>
+                        <img src="media/images/checkbox-unchecked.svg" style = "width: 25px; max-height: 25px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_completion_url }}"'>
+                        
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}   
+
+                <h3 class="text-center">Dailies</h3>
+                {% for d in c.task_set.all %}
+                {% if d.is_daily == True %}
+                <div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-5 align-items-center justify-content-center"><h3 style="float: left;">{{ d.name }}</h3></div>
+                        {% if d.description %}
+                        <div class="col align-items-center justify-content-center"><h3 style="float: left;">{{ d.description }}</h3></div>
+                        {% else %}
+                        <div class="col align-items-center justify-content-center"><h3 style="float: left;"> </h3></div>
+                        {% endif %}
+
+                        <div class="col-1 d-flex align-items-center justify-content-center">
+                        {% block icons %}
+                        <img src="media/images/edit_icon.png" style="width: 20px; max-height: 20px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ d.get_absolute_url }}"'>
+                        <img src="media/images/checkbox-unchecked.svg" style = "width: 25px; max-height: 25px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ d.get_completion_url }}"'>
+                        {% endblock %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <h3 class="text-center">Habits</h3>
+                {% for h in c.habit_set.all %}
+                <div class="container-text-left" style="margin-left: 12px; margin-right: 12px; margin-top: 10px;">
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-5 align-items-center justify-content-center"><h3 style="float: left;">{{ h.name }}</h3></div>
+                        {% if h.description %}
+                        <div class="col align-items-center justify-content-center"><h3 style="float: left;">{{ h.description }}</h3></div>
+                        {% else %}
+                        <div class="col align-items-center justify-content-center"><h3 style="float: left;"> </h3></div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
