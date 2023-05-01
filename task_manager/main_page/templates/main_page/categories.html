@@ -14,7 +14,7 @@
 
 <div class="container bg-light" style="margin-top: 70px; padding-bottom: 50px;">
     <h2 class="text-center">Categories</h2>
-    <a href="{% url 'main_page:add_category' %}" class="btn btn-light btn-lg btn-hover">Add Category</a>
+    <a href="{% url 'main_page:add_category' %}" class="btn btn-light btn-lg btn-hover" style="font-size: 18px;">Add Category</a>
     <div class="accordion accordion-flush" id="accordionFlushExample">
         {% for c in categories %}
         <div class="accordion-item">

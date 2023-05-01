@@ -7,6 +7,8 @@
 
 <title>Task Manager Project</title>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 {% endblock %}
 
 
@@ -86,7 +88,8 @@
     <div class="col-1 d-flex align-items-center justify-content-center">
       {% block icons %}
       <img src="media/images/edit_icon.png" style="width: 20px; max-height: 20px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_absolute_url }}"'>
-      <img src="media/images/checkbox-unchecked.svg" style = "width: 25px; max-height: 25px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_completion_url }}"'>
+      <!-- <img src="media/images/checkbox-unchecked.svg" style = "width: 25px; max-height: 25px; float: right; margin-right: 30px; cursor: pointer" onclick='location.href="{{ t.get_completion_url }}"'> -->
+      <input type="checkbox" {% if t.is_completed %}checked{% endif %} data-url="{{ t.get_completion_url }}" data-csrf="{{ csrf_token }}" class="task-checkbox">
       {% endblock %}
     </div>
 
@@ -107,6 +110,32 @@
   </div>
 </div>
 
+<script>
+  $(document).ready(function() {
+    $('.task-checkbox').on('click', function() {
+      var checkbox = $(this);
+      var url = checkbox.data('url');
+      var csrf_token = checkbox.data('csrf');
+      var is_completed = checkbox.prop('checked');
+
+      $.ajax({
+        url: url,
+        type: 'POST',
+        data: {
+            'csrfmiddlewaretoken': csrf_token,
+            'is_completed': is_completed
+        },
+        success: function(response) {
+            checkbox.prop('checked', response.completed);
+        },
+        error: function(xhr, status, error) {
+            // handle the error
+        }
+      });
+    });
+  });
+
+</script>
 
 {% endblock %}
 

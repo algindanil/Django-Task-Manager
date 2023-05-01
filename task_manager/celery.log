@@ -1,0 +1,34 @@
+[2023-05-01 17:04:09,761: INFO/MainProcess] Connected to redis://127.0.0.1:6379/0
+[2023-05-01 17:04:09,860: INFO/MainProcess] mingle: searching for neighbors
+[2023-05-01 17:04:10,342: INFO/SpawnPoolWorker-3] child process 15356 calling self.run()
+[2023-05-01 17:04:10,356: INFO/SpawnPoolWorker-7] child process 1384 calling self.run()
+[2023-05-01 17:04:10,358: INFO/SpawnPoolWorker-2] child process 8432 calling self.run()
+[2023-05-01 17:04:10,364: INFO/SpawnPoolWorker-8] child process 12908 calling self.run()
+[2023-05-01 17:04:10,384: INFO/SpawnPoolWorker-6] child process 18236 calling self.run()
+[2023-05-01 17:04:10,401: INFO/SpawnPoolWorker-1] child process 16484 calling self.run()
+[2023-05-01 17:04:10,401: INFO/SpawnPoolWorker-5] child process 3216 calling self.run()
+[2023-05-01 17:04:10,439: INFO/SpawnPoolWorker-4] child process 15556 calling self.run()
+[2023-05-01 17:04:11,013: INFO/MainProcess] mingle: all alone
+[2023-05-01 17:04:11,172: WARNING/MainProcess] C:\Users\Danylo\Desktop\Django project (2)\venv\Lib\site-packages\celery\fixups\django.py:203: UserWarning: Using settings.DEBUG leads to a memory
+            leak, never use this setting in production environments!
+  warnings.warn('''Using settings.DEBUG leads to a memory
+
+[2023-05-01 17:04:11,173: INFO/MainProcess] celery@DESKTOP-JA5F15Q ready.
+[2023-05-01 17:04:12,658: INFO/SpawnPoolWorker-9] child process 7268 calling self.run()
+[2023-05-01 17:14:39,803: INFO/MainProcess] Connected to redis://127.0.0.1:6379/0
+[2023-05-01 17:14:39,815: INFO/MainProcess] mingle: searching for neighbors
+[2023-05-01 17:14:39,904: INFO/SpawnPoolWorker-6] child process 1396 calling self.run()
+[2023-05-01 17:14:39,936: INFO/SpawnPoolWorker-3] child process 8952 calling self.run()
+[2023-05-01 17:14:39,936: INFO/SpawnPoolWorker-2] child process 14320 calling self.run()
+[2023-05-01 17:14:39,936: INFO/SpawnPoolWorker-4] child process 5884 calling self.run()
+[2023-05-01 17:14:39,961: INFO/SpawnPoolWorker-1] child process 8132 calling self.run()
+[2023-05-01 17:14:39,965: INFO/SpawnPoolWorker-8] child process 18048 calling self.run()
+[2023-05-01 17:14:40,232: INFO/SpawnPoolWorker-7] child process 12888 calling self.run()
+[2023-05-01 17:14:40,235: INFO/SpawnPoolWorker-5] child process 12252 calling self.run()
+[2023-05-01 17:14:40,892: INFO/MainProcess] mingle: all alone
+[2023-05-01 17:14:40,929: WARNING/MainProcess] C:\Users\Danylo\Desktop\Django project (2)\venv\Lib\site-packages\celery\fixups\django.py:203: UserWarning: Using settings.DEBUG leads to a memory
+            leak, never use this setting in production environments!
+  warnings.warn('''Using settings.DEBUG leads to a memory
+
+[2023-05-01 17:14:40,929: INFO/MainProcess] celery@DESKTOP-JA5F15Q ready.
+[2023-05-01 17:14:41,235: INFO/SpawnPoolWorker-9] child process 2428 calling self.run()

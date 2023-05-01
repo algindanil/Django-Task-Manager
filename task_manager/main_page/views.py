@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.views.generic import DetailView, UpdateView, CreateView
 from django.utils.text import slugify
 from django.db.models import Prefetch
+from django.http import JsonResponse
 
 from .forms import TaskForm, HabitForm, CategoryForm
 from registration.models import CustomUser, Category, Reward, Task, Habit
@@ -13,14 +14,13 @@ from registration.forms import CustomUserChangeForm
 
 @login_required
 def tasks_view(request, is_daily=False):
-    
     user = request.user
     tasks = Task.objects.filter(player=user, is_daily=is_daily, is_completed=False)
     return render(request, 'main_page/tasks.html', { 'user': user, 'tasks': tasks, 'is_daily': is_daily })
 
 
+@login_required
 def habits_view(request):
-    
     user = request.user
     habits = Habit.objects.filter(player=user)
     return render(request, 'main_page/habits.html', { 'user': user, 'habits': habits })
@@ -28,36 +28,27 @@ def habits_view(request):
 
 @login_required
 def logout_view(request):
-    
     logout(request)
     return redirect('registration:start_page')
 
 
 @login_required
 def categories_view(request):
-    
     user = request.user
     categories = Category.objects.filter(player=user).prefetch_related(
         Prefetch('task_set', queryset=Task.objects.filter(is_completed=False)),
                  'habit_set'
     ).all()
 
-    print(categories)
-    # for c in categories:
-    #     for t in c.task_set.all():
-    #         print(t.name)
-
     return render(request, 'main_page/categories.html', { 'categories': categories })
 
 
 @login_required
 def reward_view(request):
-    
     return HttpResponse("reward")
 
 
 class EditProfile(UpdateView):
-    
     model = CustomUser
     template_name = 'main_page/profile.html'
     fields = ['first_name', 'profile_pic', ]
@@ -72,7 +63,6 @@ class EditProfile(UpdateView):
 
 
 class ShowTask(UpdateView):
-    
     model = Task
     template_name = 'main_page/show_task.html'
     fields = [ 'name', 'description', 'difficulty', 'due_date', 'categories', 'is_daily' ]
@@ -87,10 +77,9 @@ class ShowTask(UpdateView):
     
 
 class ShowHabit(UpdateView):
-    
     model = Habit
     template_name = 'main_page/show_habit.html'
-    fields = { 'name', 'description', 'categories' }
+    fields = [ 'name', 'description', 'categories' ]
 
     def get_object(self, queryset=None):
         slug = self.kwargs['habit_slug']
@@ -98,19 +87,11 @@ class ShowHabit(UpdateView):
     
     def form_valid(self, form):
         form.save()
-        return redirect('main_page:home')
-
-
-# class AddTask(CreateView):
-    
-#     form_class = TaskForm
-#     template_name = 'main_page/add_task.html'
-#     success_url = 'main_page:tasks'
+        return redirect('main_page:habits')
 
 
 @login_required
 def add_task(request, is_daily=False):
-    
     task_type = 'DAILY' if is_daily else 'TASK'
     
     if request.method == 'POST':
@@ -146,7 +127,6 @@ def add_task(request, is_daily=False):
 
 @login_required    
 def add_habit(request):
-
     if request.method == 'POST':
         form = HabitForm(request.POST)
         success_url = reverse('main_page:habits')
@@ -176,7 +156,6 @@ def add_habit(request):
 
 @login_required
 def add_category(request):
-
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         success_url = reverse('main_page:tasks')
@@ -195,24 +174,25 @@ def add_category(request):
 
 @login_required
 def complete_task(request, task_id, is_daily=False):
-    
     task = get_object_or_404(Task, id=task_id)
     user = request.user
     categories = task.categories.all()
-    for c in categories:
-        c.progress_meter += task.reward
-        c.save()
-    user.currency_amount += task.reward
-    task.completion_count += 1
-    task.is_completed = True
-    task.save()
-    user.save()
-    return redirect('main_page:tasks') if not is_daily else redirect('main_page:dailies')
+    
+    if request.method == 'POST':
+        m = -1 if task.is_completed else 1
+        for c in categories:
+            c.progress_meter += task.reward * m
+            c.save()
+        user.currency_amount += task.reward * m
+        user.save()
+        task.is_completed = request.POST.get('is_completed') == 'true'            
+        task.completion_count += m
+        task.save()
+        return JsonResponse({'completed': task.is_completed})
 
 
 @login_required
-def tasks_archive(request, is_daily=False):
-    
+def tasks_archive(request, is_daily=False): 
     user = request.user
     tasks = Task.objects.filter(player=user, is_daily=is_daily, is_completed=True)
     return render(request, 'main_page/tasks_archive.html',
