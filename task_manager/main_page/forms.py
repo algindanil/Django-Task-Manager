@@ -7,7 +7,11 @@ class HabitForm(ModelForm):
     
     class Meta:
         model = Habit
-        fields = ['name', 'description', 'priority','categories',]
+        fields = ['name',
+                  'description',
+                  'priority',
+                  'categories',
+                 ]
 
 
 class TaskForm(ModelForm):
