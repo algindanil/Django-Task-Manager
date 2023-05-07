@@ -1,17 +1,17 @@
 import os
 
 from pathlib import Path
-import environ
+# import environ
 
 
-env = environ.Env()
-environ.Env.read_env()
+# env = environ.Env()
+# environ.Env.read_env()
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = 'django-insecure-n2$27^tm0s(8=_1_e^q(=ck3+gi2+brwwm9hkkotf)at)e1tmr'
 
 
 DEBUG = True
@@ -71,11 +71,11 @@ WSGI_APPLICATION = 'task_manager.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST'),
-        'PORT': env('DATABASE_PORT'),
+        'NAME': 'task_manager_db',
+        'USER': 'postgres',
+        'PASSWORD': 'rootroot123',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -125,7 +125,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery and Redis
 
-REDIS_HOST = '127.0.0.1'
+REDIS_HOST = 'redis'
 REDIS_PORT = '6379'
 
 CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
