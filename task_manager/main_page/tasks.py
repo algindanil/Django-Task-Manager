@@ -10,3 +10,4 @@ def reset_dailies():
         if d.is_completed:
             d.completion_count += 1
         d.is_completed = False    
+        d.save()

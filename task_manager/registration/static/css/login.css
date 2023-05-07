@@ -1,0 +1,11 @@
+.container-m {
+    position: absolute !important;
+    top: calc(50% - 50px) !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
+
+h1 {
+    margin-bottom: 50px;
+    text-align: center;
+}

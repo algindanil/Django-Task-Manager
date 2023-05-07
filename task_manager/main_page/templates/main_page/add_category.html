@@ -7,14 +7,15 @@
 {% block title %} 
 
 <title>Add Category</title>
+<link rel="stylesheet" type="text/css" href="{% static 'css/add-item-form-page.css' %}">
 
 {% endblock %}
 
 
 {% block content %}
 
-<div class="container-m align-items-center" style="position: absolute; top: calc(50% - 20px); left: 50%; transform: translate(-50%, -50%);">
-<h1 style="margin-bottom: 20px; text-align: center;">ADD CATEGORY</h1>
+<div class="container-m align-items-center">
+<h1>ADD CATEGORY</h1>
   
   <form action="" method="post" class="form">
     {% csrf_token %}

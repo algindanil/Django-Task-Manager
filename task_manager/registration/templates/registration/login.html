@@ -1,5 +1,6 @@
 {% extends 'forms_base.html' %}
 
+
 {% load static %}
 {% load django_bootstrap5 %}
 
@@ -7,15 +8,16 @@
 {% block title %} 
 
 <title>Log In</title>
-<link rel="stylesheet" type="text/css" href="{% static 'registration/css/login.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
 
 {% endblock %}
 
 
 {% block content %}
 
-<div class="container-m align-items-center" style="position: absolute; top: calc(50% - 50px); left: 50%; transform: translate(-50%, -50%);">
-<h1 style="margin-bottom: 50px; text-align: center;">LOG IN</h1>
+<div class="container-m align-items-center customc">
+
+    <h1 class="customh1">LOG IN</h1>
   
   <form action="" method="post" class="form">
     {% csrf_token %}

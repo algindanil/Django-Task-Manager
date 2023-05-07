@@ -1,0 +1,17 @@
+.container-m {
+  position: absolute;
+  top: calc(50% - 20px);
+  left: 50%;
+  transform: translate(-50%, -50%)
+}
+
+h1 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ahref {
+  position: absolute;
+  right: 0px;
+  font-size: large;
+}

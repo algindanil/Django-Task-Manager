@@ -7,8 +7,11 @@ from django.contrib.auth import authenticate,login
 from registration.forms import CustomUserLoginForm, CustomUserCreationForm
 
 
-class SignUpView(CreateView):
+def index(request):
+    return render(request, 'registration/start_page.html')
 
+
+class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/signup.html'
 
@@ -22,10 +25,6 @@ class SignUpView(CreateView):
             return redirect(success_url)
         else:
             return render(request, self.template_name, {'form': form})
-
-
-def index(request):
-    return render(request, 'registration/start_page.html')
 
 
 class LoginView(View):
