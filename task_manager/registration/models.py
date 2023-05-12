@@ -89,7 +89,7 @@ class Task(models.Model):
     description = models.CharField(max_length=512, null=True, blank=True)
     is_completed = models.BooleanField(default=False)
     due_date = models.DateTimeField(null=True, blank=True, validators=[validate_due_date])
-    reward = models.FloatField(validators=[MinValueValidator(0.0)], default = 1.0)
+    reward = models.FloatField(validators=[MinValueValidator(0.0)], default=1.0)
     create_date = models.DateTimeField(auto_now_add=True)
     is_daily = models.BooleanField(default=False)
     completion_count = models.IntegerField(default=0, validators=[MinValueValidator(0)])
@@ -120,6 +120,7 @@ class Habit(models.Model):
     # Optional fields and fields with default values:
     description = models.CharField(max_length=512, null=True, blank=True)
     is_good = models.BooleanField(default=True)
+    reward = models.FloatField(validators=[MinValueValidator(0.0)], default=1.0)
     tracking_meter = models.FloatField(default=0.0, validators=[MinValueValidator(-100.0), MaxValueValidator(100.0)])
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     positive_behavior_count = models.IntegerField(default=0)
@@ -129,5 +130,11 @@ class Habit(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('main_page:habit', kwargs={ 'habit_slug': self.slug })
+        return reverse('main_page:habit', kwargs={'habit_slug': self.slug})
     
+    def get_add_url(self):
+        return reverse('main_page:habit_add', kwargs={'habit_id': self.pk})
+        
+    def get_sub_url(self):
+        return reverse('main_page:habit_sub', kwargs={'habit_id': self.pk})
+        

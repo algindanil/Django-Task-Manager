@@ -74,7 +74,7 @@ DATABASES = {
         'NAME': 'task_manager_db',
         'USER': 'postgres',
         'PASSWORD': 'rootroot123',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }

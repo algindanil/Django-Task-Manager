@@ -27,6 +27,8 @@ urlpatterns = [
     path('complete_daily/<int:task_id>', views.complete_task, kwargs={'is_daily': True}, name='complete_daily'),
     path('tasks_archive', views.tasks_archive, name='tasks_archive'),
     path('dailies_archive', views.tasks_archive, kwargs={ 'is_daily': True }, name='dailies_archive'),
+    path('habit_add/<int:habit_id>', views.habit_control, kwargs={'counter_positive': True}, name='habit_add'),
+    path('habit_sub/<int:habit_id>', views.habit_control, kwargs={'counter_positive': False}, name='habit_sub'),
 ]
 
 

@@ -9,6 +9,7 @@ class HabitForm(ModelForm):
         model = Habit
         fields = ['name',
                   'description',
+                  'difficulty',
                   'priority',
                   'categories',
                  ]

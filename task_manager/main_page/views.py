@@ -100,7 +100,7 @@ def add_task(request, is_daily=False):
         if form.is_valid():
             task = form.save(commit=False)
             task.player = request.user
-            task.reward = 5.0 * task.difficulty
+            task.reward = 2.0*task.priority + task.difficulty
             task.is_daily = is_daily
             test_slug = slugify(task.name)
             i = 1
@@ -133,6 +133,7 @@ def add_habit(request):
         if form.is_valid():
             habit = form.save(commit=False)
             habit.player = request.user
+            habit.reward = 2.0*habit.priority + habit.difficulty 
             test_slug = slugify(habit.name)
             i = 1
             
@@ -174,11 +175,11 @@ def add_category(request):
 
 @login_required
 def complete_task(request, task_id, is_daily=False):
-    task = get_object_or_404(Task, id=task_id)
-    user = request.user
-    categories = task.categories.all()
-    
     if request.method == 'POST':
+        task = get_object_or_404(Task, id=task_id)
+        user = request.user
+        categories = task.categories.all()
+
         m = -1 if task.is_completed else 1
         for c in categories:
             c.progress_meter += task.reward * m
@@ -189,6 +190,8 @@ def complete_task(request, task_id, is_daily=False):
         task.completion_count += m
         task.save()
         return JsonResponse({'completed': task.is_completed})
+    else:
+        return JsonResponse({'completed': False})
 
 
 @login_required
@@ -197,3 +200,27 @@ def tasks_archive(request, is_daily=False):
     tasks = Task.objects.filter(player=user, is_daily=is_daily, is_completed=True)
     return render(request, 'main_page/tasks_archive.html',
                   { 'user': user, 'tasks': tasks, 'is_daily': is_daily })    
+
+
+@login_required
+def habit_control(request, habit_id, counter_positive=True):    
+    if request.method == 'POST':
+        habit = get_object_or_404(Habit, id=habit_id)
+        user = request.user
+        categories = habit.categories.all()
+
+        if counter_positive:
+            m = 1
+            habit.tracking_meter = min(habit.tracking_meter + habit.reward, 100)
+        else:
+            m = -1
+            habit.tracking_meter = max(habit.tracking_meter - habit.reward, -100)
+        for c in categories:
+            c.progress_meter += habit.reward * m
+            c.save()
+        user.currency_amount += habit.reward * m
+        user.save()
+        habit.save()
+        return JsonResponse({'currency_amount': user.currency_amount, 'lvl': user.lvl})
+    else:
+        return JsonResponse()

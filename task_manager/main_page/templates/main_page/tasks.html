@@ -19,12 +19,12 @@
 <div class="container text-center main-container">
     <div class="row">
       <div class="col d-flex justify-content-center align-items-center">
-        <h1>LVL {{ user.lvl }}</h1>
+        <h1 id="lvl">LVL {{ user.lvl }}</h1>
       </div>
       <div class="col d-flex justify-content-center align-items-center">
         <div class="d-flex justify-content-center align-items-center">
             <img src='media/images/coin_icon.png' class="navbar-icon">
-            <h1>{{ user.currency_amount}} </h1>
+            <h1 id="currency-amount">{{ user.currency_amount}} </h1>
         </div>
       </div>
       <div class="col">
@@ -90,7 +90,7 @@
   
   {% endfor %}
 
-  <div class="row">
+  <div class="row"> 
     {% block archive_link %}
 
     {% if is_daily == False %}
