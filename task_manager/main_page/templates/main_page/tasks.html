@@ -17,26 +17,44 @@
 {% block content %}
 
 <div class="container text-center main-container">
-    <div class="row">
-      <div class="col d-flex justify-content-center align-items-center">
-        <h1 id="lvl">LVL {{ user.lvl }}</h1>
-      </div>
-      <div class="col d-flex justify-content-center align-items-center">
-        <div class="d-flex justify-content-center align-items-center">
-            <img src='media/images/coin_icon.png' class="navbar-icon">
-            <h1 id="currency-amount">{{ user.currency_amount}} </h1>
-        </div>
-      </div>
-      <div class="col">
-        <img src="{{ user.profile_pic.url }}" class="pfp-icon" onclick="location.href=`{{user.get_absolute_url}}`">
-      </div>
-      <div class="col d-flex justify-content-center align-items-center">
-        <a href="{% url 'main_page:reward' %}" class="navbar-links">Rewards</a>
-      </div>
-      <div class="col d-flex justify-content-center align-items-center">
-        <a href="{% url 'main_page:categories' %}" class="navbar-links">Categories</a>
+  <a class="btn position-absolute top-0 start-0 sidebar-anchor" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+    <img src="media/images/sidebar_icon.png" class="sidebar-icon" alt="Sidebar">
+  </a>
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Navigation</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item" aria-current="true">
+        <a href="{% url 'main_page:logout' %}" class="btn btn-hover">Log Out</a>
+      </li>
+      <li class="list-group-item">
+        <a href="{% url 'main_page:queries' %}" class="btn btn-hover">Query Tools</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="col d-flex justify-content-center align-items-center">
+      <h1 id="lvl">LVL {{ user.lvl }}</h1>
+    </div>
+    <div class="col d-flex justify-content-center align-items-center">
+      <div class="d-flex justify-content-center align-items-center">
+          <img src='media/images/coin_icon.png' class="navbar-icon">
+          <h1 id="currency-amount">{{ user.currency_amount}} </h1>
       </div>
     </div>
+    <div class="col">
+      <img src="{{ user.profile_pic.url }}" class="pfp-icon" onclick="location.href=`{{user.get_absolute_url}}`">
+    </div>
+    <div class="col d-flex justify-content-center align-items-center">
+      <a href="{% url 'main_page:reward' %}" class="navbar-links">Rewards</a>
+    </div>
+    <div class="col d-flex justify-content-center align-items-center">
+      <a href="{% url 'main_page:categories' %}" class="navbar-links">Categories</a>
+    </div>
+  </div>
 </div>
 
 

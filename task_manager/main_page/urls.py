@@ -1,8 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.static import static
 
 # from main_page.views import tasks_view, habits_view, logout_view, login_required, categories_view, reward_view, EditProfile, ShowHabit, ShowTask, add_task, add_habit, add_category, complete_task, tasks_archive
 import main_page.views as views
+from .api import urls as api_urls
 from task_manager import settings
 
 
@@ -29,6 +30,8 @@ urlpatterns = [
     path('dailies_archive', views.tasks_archive, kwargs={ 'is_daily': True }, name='dailies_archive'),
     path('habit_add/<int:habit_id>', views.habit_control, kwargs={'counter_positive': True}, name='habit_add'),
     path('habit_sub/<int:habit_id>', views.habit_control, kwargs={'counter_positive': False}, name='habit_sub'),
+    path('queries', views.logout_view, name='queries'),
+    path('api/v1/', include(api_urls)),
 ]
 
 

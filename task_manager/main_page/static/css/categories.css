@@ -31,4 +31,12 @@ h3 {
 
 .title-h3 {
     float: none;
+    margin-top: 20px;
+    font-size: 32px
+}
+
+.list-items {
+    padding-bottom: 5px;
+    border-bottom: 1px solid black;
+    margin-bottom: 3px;
 }

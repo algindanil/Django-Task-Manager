@@ -32,7 +32,7 @@
               {% for t in c.task_set.all %}
               {% if t.is_daily == False %}
                 <div class="container-text-left subcontainer">
-                    <div class="row">
+                    <div class="row list-items">
                         <div class="col-5 align-items-center justify-content-center"><h3>{{ t.name }}</h3></div>
                         {% if t.description %}
                         <div class="col align-items-center justify-content-center"><h3>{{ t.description }}</h3></div>
@@ -55,7 +55,7 @@
                 {% for d in c.task_set.all %}
                 {% if d.is_daily == True %}
                 <div class="container-text-left subcontainer">
-                    <div class="row">
+                    <div class="row list-items">
                         <div class="col-5 align-items-center justify-content-center"><h3>{{ d.name }}</h3></div>
                         {% if d.description %}
                         <div class="col align-items-center justify-content-center"><h3>{{ d.description }}</h3></div>
@@ -77,7 +77,7 @@
                 <h3 class="text-center title-h3">Habits</h3>
                 {% for h in c.habit_set.all %}
                 <div class="container-text-left subcontainer">
-                    <div class="row">
+                    <div class="row list-items">
                         <div class="col-5 align-items-center justify-content-center"><h3>{{ h.name }}</h3></div>
                         {% if h.description %}
                         <div class="col align-items-center justify-content-center"><h3>{{ h.description }}</h3></div>

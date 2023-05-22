@@ -19,6 +19,7 @@ class CustomUser(AbstractUser):
     lvl = models.SmallIntegerField(default=1, validators=[MinValueValidator(0), MaxValueValidator(100)])
     slug = models.SlugField(max_length=255, unique=True, db_index=True)
     time_joined = models.DateTimeField(auto_now_add=True)
+    rewards = models.ManyToManyField('Reward', through='UserReward', blank=True)
 
     class Meta:
         verbose_name = 'User'
@@ -59,8 +60,8 @@ class Category(models.Model):
 class Reward(models.Model):
 
     # Required fields:
+    player = models.ManyToManyField('CustomUser', through='UserReward')
     name = models.CharField(max_length=50)
-    player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     cost = models.FloatField(validators=[MinValueValidator(0.0)])
 
     # Optional fields and fields with default values:
@@ -78,12 +79,11 @@ class Task(models.Model):
             raise ValidationError('Due date cannot be in the past.')
     
     # Required fields:
-    name = models.CharField(max_length=100)
     player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
     difficulty = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     priority = models.SmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     categories = models.ManyToManyField('Category')
-    
     
     # Optional fields and fields with default values:
     description = models.CharField(max_length=512, null=True, blank=True)
@@ -138,3 +138,15 @@ class Habit(models.Model):
     def get_sub_url(self):
         return reverse('main_page:habit_sub', kwargs={'habit_id': self.pk})
         
+
+class UserReward(models.Model):
+    player = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    reward = models.ForeignKey(Reward, on_delete=models.CASCADE)
+    times_completed = models.IntegerField(default=1)
+
+    class Meta:
+        verbose_name = 'User Reward'
+        verbose_name_plural = 'User Rewards'
+
+    def __str__(self):
+        return f'{self.player.username} - {self.reward.name}'

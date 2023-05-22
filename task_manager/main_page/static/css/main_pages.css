@@ -1,5 +1,5 @@
 .main-container {
-    margin-top: 50px;
+    margin-top: 45px;
 }
 
 .navbar-icon {
@@ -47,4 +47,16 @@
     float: right;
     margin-right: 30px;
     cursor: pointer
+}
+
+.sidebar-icon {
+    width: auto;
+    max-height: 30px;
+    object-fit: cover;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.sidebar-anchor {
+    margin-bottom: 100px;
 }
