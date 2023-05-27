@@ -30,7 +30,10 @@ urlpatterns = [
     path('dailies_archive', views.tasks_archive, kwargs={ 'is_daily': True }, name='dailies_archive'),
     path('habit_add/<int:habit_id>', views.habit_control, kwargs={'counter_positive': True}, name='habit_add'),
     path('habit_sub/<int:habit_id>', views.habit_control, kwargs={'counter_positive': False}, name='habit_sub'),
+    path('tasks/delete/<int:task_id>', views.login_required(views.delete_task), name='delete_task'),
+    path('habits/delete/<int:habit_id>', views.login_required(views.delete_habit), name='delete_habit'),
     path('queries', views.logout_view, name='queries'),
+
     path('api/v1/', include(api_urls)),
 ]
 

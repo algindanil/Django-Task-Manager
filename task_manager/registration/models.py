@@ -106,6 +106,9 @@ class Task(models.Model):
             return reverse('main_page:complete_task', kwargs={'task_id': self.pk}) 
         else:
             return reverse('main_page:complete_daily', kwargs={'task_id': self.pk}) 
+
+    def get_deletion_url(self):
+        return reverse('main_page:delete_task', kwargs={'task_id': self.pk})
         
 
 class Habit(models.Model):
@@ -137,6 +140,9 @@ class Habit(models.Model):
         
     def get_sub_url(self):
         return reverse('main_page:habit_sub', kwargs={'habit_id': self.pk})
+    
+    def get_deletion_url(self):
+        return reverse('main_page:delete_habit', kwargs={'habit_id': self.pk})
         
 
 class UserReward(models.Model):

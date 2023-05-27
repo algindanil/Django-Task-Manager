@@ -101,6 +101,7 @@
       {% block icons %}
       <img src="media/images/edit_icon.png" class="edit-icon" onclick='location.href="{{ t.get_absolute_url }}"'>
       <input type="checkbox" {% if t.is_completed %}checked{% endif %} data-url="{{ t.get_completion_url }}" data-csrf="{{ csrf_token }}" class="task-checkbox">
+      <img src="media/images/delete_item_icon.png" class="edit-icon" onclick='location.href="{{ t.get_deletion_url }}"'>
       {% endblock %}
     </div>
 

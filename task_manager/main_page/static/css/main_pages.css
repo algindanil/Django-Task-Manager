@@ -46,7 +46,8 @@
     max-height: 20px;
     float: right;
     margin-right: 30px;
-    cursor: pointer
+    cursor: pointer;
+    margin-left: 30px;
 }
 
 .sidebar-icon {

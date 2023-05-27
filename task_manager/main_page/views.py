@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
-from django.views.generic import DetailView, UpdateView, CreateView
+from django.views.generic import DetailView, UpdateView, CreateView, DeleteView
 from django.utils.text import slugify
 from django.db.models import Prefetch
 from django.http import JsonResponse
@@ -45,6 +45,10 @@ def categories_view(request):
 
 @login_required
 def reward_view(request):
+    print(request.user.id)
+    categories = Category.objects.filter(player=request.user)
+    for c in categories:
+        print(c.id)
     return HttpResponse("reward")
 
 
@@ -159,7 +163,7 @@ def add_habit(request):
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
-        success_url = reverse('main_page:tasks')
+        success_url = reverse('main_page:categories')
         if form.is_valid():
             category = form.save(commit=False)
             category.player = request.user
@@ -192,6 +196,20 @@ def complete_task(request, task_id, is_daily=False):
         return JsonResponse({'completed': task.is_completed})
     else:
         return JsonResponse({'completed': False})
+
+
+@login_required
+def delete_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    task.delete()
+    return redirect(reverse('main_page:tasks'))
+
+
+@login_required
+def delete_habit(request, habit_id):
+    habit = get_object_or_404(Habit, id=habit_id)
+    habit.delete()
+    return redirect(reverse('main_page:habits'))
 
 
 @login_required
